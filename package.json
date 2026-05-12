@@ -4,7 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch src/main.ts",
+    "creational": "tsx --watch src/creational/main.ts",
+    "structural": "tsx --watch src/structural/main.ts",
+    "behavioral": "tsx --watch src/behavioral/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
     "test": "vitest run",
