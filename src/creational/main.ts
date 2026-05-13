@@ -60,4 +60,23 @@ checkout(stripeFactory);
 
 console.log("\n------------------------------------------------------------\n");
 
-console.log("-------------------- 3: Builder ---------------------\n");
+console.log("------------------------ 3: Builder -------------------------\n");
+import { createReport } from "./3-builder/builder.js";
+import { ReportBuilder } from "./3-builder/builder-oo.js";
+
+console.log("------------------------ Builder -------------------------");
+const report = createReport({
+  title: "Ventas Q1",
+  format: "pdf",
+  includeCharts: true,
+});
+console.log(report);
+
+console.log("-------------------- Builder OO ---------------------");
+const report2 = new ReportBuilder()
+  .withTitle("Ventas Q1")
+  .withCharts()
+  .asPdf()
+  .inSpanish()
+  .build();
+console.log(report2);
