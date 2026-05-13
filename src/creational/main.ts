@@ -80,3 +80,35 @@ const report2 = new ReportBuilder()
   .inSpanish()
   .build();
 console.log(report2);
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 4: Prototype ---------------------\n");
+import { ReportTemplate } from "./4-prototype/prototype-oo.js";
+import {
+  blackFridayPrototype,
+  cloneCampaign,
+} from "./4-prototype/prototype-real.js";
+
+console.log("-------------------- Prototype ---------------------");
+
+console.log("-------------------- Prototype OO ---------------------");
+const quarterlyTemplate = new ReportTemplate(
+  "Reporte trimestral",
+  ["Resumen", "Ventas", "Conclusiones"],
+  true,
+);
+
+const customReport = quarterlyTemplate.clone();
+customReport.title = "Reporte Q1";
+customReport.sections.push("Anexos");
+console.log(customReport);
+
+console.log("----------------- Prototype Real example -------------------");
+const cyberMondayCampaign = cloneCampaign(blackFridayPrototype, {
+  subject: "Cyber Monday empezó",
+  utmCampaign: "cyber-monday",
+});
+console.log(cyberMondayCampaign);
+
+console.log("\n------------------------------------------------------------\n");
