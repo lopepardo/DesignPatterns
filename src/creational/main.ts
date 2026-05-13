@@ -90,8 +90,6 @@ import {
   cloneCampaign,
 } from "./4-prototype/prototype-real.js";
 
-console.log("-------------------- Prototype ---------------------");
-
 console.log("-------------------- Prototype OO ---------------------");
 const quarterlyTemplate = new ReportTemplate(
   "Reporte trimestral",
@@ -110,5 +108,27 @@ const cyberMondayCampaign = cloneCampaign(blackFridayPrototype, {
   utmCampaign: "cyber-monday",
 });
 console.log(cyberMondayCampaign);
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 5: Singleton ---------------------\n");
+
+import { logger } from "./5-singleton/singleton.js";
+import { logger as loggerOO } from "./5-singleton/singleton-oo.js";
+import { getDatabaseConnection } from "./5-singleton/singleton-lazy.js";
+
+logger.info("Pedido creado");
+logger.error("Error al procesar el pago");
+
+console.log("-------------------- Singleton OO ---------------------\n");
+
+loggerOO.info("Aplicación iniciada");
+loggerOO.error("Error al cargar configuración");
+
+console.log("-------------------- Singleton Lazy ---------------------\n");
+
+const db = getDatabaseConnection();
+const users = db.query("SELECT * FROM users");
+console.log(users);
 
 console.log("\n------------------------------------------------------------\n");
