@@ -39,17 +39,17 @@ console.log("\n------------------------------------------------------------\n");
 
 console.log("-------------------- 2: Bridge ---------------------\n");
 import {
-  EmailSender,
-  Notification,
-  SmsSender,
-  UrgentNotification,
-} from "./2-bridge/bridge-oo.js";
-import {
   createNotification,
   createUrgentNotification,
   emailSender,
   smsSender,
 } from "./2-bridge/bridge.js";
+import {
+  EmailSender,
+  Notification,
+  SmsSender,
+  UrgentNotification,
+} from "./2-bridge/bridge-oo.js";
 import {
   csvExporter,
   htmlExporter,
@@ -79,5 +79,57 @@ console.log(csvSalesReport.generate());
 
 const htmlSalesReport = new SalesReport(htmlExporter);
 console.log(htmlSalesReport.generate());
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 3: Composite ---------------------\n");
+import {
+  type FileSystemNode,
+  getSize,
+  printNode,
+} from "./3-composite/composite.js";
+import { File, Folder } from "./3-composite/composite-oo.js";
+
+console.log("-------------------- Composite ---------------------\n");
+const root: FileSystemNode = {
+  kind: "folder",
+  name: "root",
+  children: [
+    {
+      kind: "file",
+      name: "a.txt",
+      size: 10,
+    },
+    {
+      kind: "folder",
+      name: "images",
+      children: [
+        {
+          kind: "file",
+          name: "photo.png",
+          size: 500,
+        },
+      ],
+    },
+  ],
+};
+
+printNode(root);
+console.log(`Total size of root: ${getSize(root)} KB`);
+
+console.log("-------------------- Composite OO ---------------------\n");
+const root2 = new Folder("root");
+root2.add(new File("a.txt", 10));
+root2.add(new File("b.txt", 20));
+
+const images = new Folder("images");
+images.add(new File("photo.png", 500));
+images.add(new File("logo.svg", 30));
+
+root2.add(images);
+
+root2.print();
+console.log(`Total size of root: ${root2.getSize()} KB`);
+console.log(`Total size of images: ${images.getSize()} KB`);
 
 console.log("\n------------------------------------------------------------\n");
