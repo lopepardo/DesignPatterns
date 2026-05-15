@@ -13,10 +13,10 @@ export type ExternalUserResponse = {
   };
 };
 
-export function adaptExternalUser(response: ExternalUserResponse): User {
+export const adaptExternalUser = (response: ExternalUserResponse): User => {
   return {
     id: String(response.user_id),
     fullName: `${response.first_name} ${response.last_name}`,
     email: response.contact.email_address,
   };
-}
+};

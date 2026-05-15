@@ -25,7 +25,7 @@ export class ExternalPaymentAdapter implements PaymentProcessor {
   }
 }
 
-// async function checkout(processor: PaymentProcessor) {
+// export const checkout = async (processor: PaymentProcessor) => {
 export const checkout = (processor: PaymentProcessor) => {
   // await processor.pay(150);
   processor.pay(150);
