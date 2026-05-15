@@ -14,6 +14,6 @@ const notificationFactories: Record<NotificationType, () => Notification> = {
   }),
 };
 
-export function createNotification(type: NotificationType): Notification {
+export const createNotification = (type: NotificationType): Notification => {
   return notificationFactories[type]();
 }

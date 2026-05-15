@@ -6,14 +6,14 @@ type NotificationFactory = () => Notification;
 
 const notificationFactories = new Map<string, NotificationFactory>();
 
-function registerNotificationFactory(
+const registerNotificationFactory = (
   type: string,
   factory: NotificationFactory,
-): void {
+): void => {
   notificationFactories.set(type, factory);
-}
+};
 
-export function createNotificationRegistered(type: string): Notification {
+export const createNotificationRegistered = (type: string): Notification => {
   const factory = notificationFactories.get(type);
 
   if (!factory) {
@@ -21,7 +21,7 @@ export function createNotificationRegistered(type: string): Notification {
   }
 
   return factory();
-}
+};
 
 registerNotificationFactory("email", () => ({
   send(message) {

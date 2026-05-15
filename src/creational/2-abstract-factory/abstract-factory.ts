@@ -43,14 +43,14 @@ const factories: Record<Theme, UIThemeFactory> = {
   dark: darkThemeFactory,
 };
 
-export function getThemeFactory(theme: Theme): UIThemeFactory {
+export const getThemeFactory = (theme: Theme): UIThemeFactory => {
   return factories[theme];
-}
+};
 
-export function renderSettingsPage(factory: UIThemeFactory) {
+export const renderSettingsPage = (factory: UIThemeFactory) => {
   const button = factory.createButton();
   const modal = factory.createModal();
 
   console.log(button.render());
   console.log(modal.render());
-}
+};

@@ -24,14 +24,14 @@ export const blackFridayPrototype: Campaign = {
   },
 };
 
-export function cloneCampaign(
+export const cloneCampaign = (
   prototype: Campaign,
   overrides: {
     subject?: string;
     body?: string;
     utmCampaign?: string;
   },
-): Campaign {
+): Campaign => {
   return {
     ...prototype,
     tracking: {
@@ -44,4 +44,4 @@ export function cloneCampaign(
       body: overrides.body ?? prototype.content.body,
     },
   };
-}
+};

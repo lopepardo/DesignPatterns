@@ -55,10 +55,10 @@ export class DarkThemeFactory implements UIThemeFactory {
   }
 }
 
-export function renderPage(factory: UIThemeFactory) {
+export const renderPage = (factory: UIThemeFactory) => {
   const button = factory.createButton();
   const modal = factory.createModal();
 
   console.log(button.render());
   console.log(modal.render());
-}
+};

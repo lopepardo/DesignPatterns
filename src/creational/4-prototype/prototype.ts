@@ -19,4 +19,3 @@ const invoice: Invoice = {
   customerName: "Ana",
   amount: 120000,
 };
-console.log(invoice);

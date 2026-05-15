@@ -5,7 +5,7 @@ type DatabaseConnection = {
 
 let connection: DatabaseConnection | undefined;
 
-export function getDatabaseConnection(): DatabaseConnection {
+export const getDatabaseConnection = (): DatabaseConnection => {
   if (!connection) {
     connection = {
       // async query(sql: string) {
@@ -20,4 +20,4 @@ export function getDatabaseConnection(): DatabaseConnection {
   }
 
   return connection;
-}
+};

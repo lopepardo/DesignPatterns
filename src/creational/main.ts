@@ -117,6 +117,7 @@ import { logger } from "./5-singleton/singleton.js";
 import { logger as loggerOO } from "./5-singleton/singleton-oo.js";
 import { getDatabaseConnection } from "./5-singleton/singleton-lazy.js";
 
+console.log("-------------------- Singleton ------------------------\n");
 logger.info("Pedido creado");
 logger.error("Error al procesar el pago");
 
