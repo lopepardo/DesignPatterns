@@ -12,7 +12,6 @@ import {
 console.log("-------------------- Adapter ---------------------");
 const processor = createPaymentAdapter(new ExternalPaymentSDK());
 
-// await processor.pay(150);
 processor.pay(150);
 
 console.log("--------------------   Adapter OO ---------------------\n");
@@ -133,3 +132,38 @@ console.log(`Total size of root: ${root2.getSize()} KB`);
 console.log(`Total size of images: ${images.getSize()} KB`);
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 4: Decorator ---------------------\n");
+import {
+  emailNotifier,
+  withLogging,
+  withUppercase,
+} from "./4-decorator/decorator.js";
+import {
+  EmailNotifier,
+  LoggingNotifier,
+  RetryNotifier,
+} from "./4-decorator/decorator-oo.js";
+import {
+  getUserHandler,
+  withErrorHandling,
+  withTiming,
+} from "./4-decorator/decorator-middleware.js";
+
+console.log("\n-------------------- Decorator ---------------------\n");
+const notifier = withLogging(withUppercase(emailNotifier));
+notifier.send("Mensaje de prueba");
+
+const notifier2 = withUppercase(withLogging(emailNotifier));
+notifier2.send("Otro mensaje de prueba");
+
+console.log("\n------------------- Decorator OO ---------------------\n");
+const notifier3 = new LoggingNotifier(new RetryNotifier(new EmailNotifier()));
+
+notifier3.send("Bienvenida");
+
+console.log("\n---------------- Decorator middleware ---------------------\n");
+const request = new Request("https://www.getusers.com/user/123");
+const handler = withErrorHandling(withTiming(getUserHandler));
+
+console.log(handler(request));
