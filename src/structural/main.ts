@@ -167,3 +167,54 @@ const request = new Request("https://www.getusers.com/user/123");
 const handler = withErrorHandling(withTiming(getUserHandler));
 
 console.log(handler(request));
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 5: Facade ---------------------\n");
+import {
+  createCheckoutFacade,
+  inventory,
+  payment,
+  orders,
+  email,
+} from "./5-facade/facade.js";
+import { CheckoutFacade } from "./5-facade/facade-oo.js";
+import {
+  externalPdfLibrary,
+  createPdfFacade,
+} from "./5-facade/facade-report.js";
+
+console.log("\n-------------------- Facade ---------------------\n");
+const checkoutFacade = createCheckoutFacade({
+  inventory,
+  payment,
+  orders,
+  email,
+});
+
+const orderId = checkoutFacade.placeOrder({
+  customerId: "customer-1",
+  productId: "product-1",
+  amount: 100000,
+});
+console.log(`Pedido realizado con ID: ${orderId}`);
+
+console.log("\n-------------------- Facade OO ---------------------\n");
+const checkout2 = new CheckoutFacade(inventory, payment, orders, email);
+
+const orderId2 = checkout2.placeOrder({
+  customerId: "customer-1",
+  productId: "product-1",
+  amount: 100000,
+});
+console.log(`Pedido realizado con ID: ${orderId2}`);
+
+console.log("\n--------------------- Facade OO report ---------------------\n");
+const pdfFacade = createPdfFacade(externalPdfLibrary);
+const pdf = pdfFacade.createReportPdf({
+  title: "Ventas Q1",
+  rows: [["Producto", "Total"]],
+});
+console.log("PDF generado:", pdf);
+
+console.log("\n------------------------------------------------------------\n");
