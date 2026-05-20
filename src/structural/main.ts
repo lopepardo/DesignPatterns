@@ -219,13 +219,71 @@ console.log("PDF generado:", pdf);
 
 console.log("\n------------------------------------------------------------\n");
 
-console.log("-------------------- 6: Proxy ---------------------\n");
+console.log("-------------------- 6: Flyweight ---------------------\n");
+import { createTreeTypeRegistry, type Tree } from "./6-flyweight/flyweight.js";
+import { TreeTypeFactory, type TreeOO } from "./6-flyweight/flyweight-oo.js";
+
+console.log("\n-------------------- Flyweight ---------------------\n");
+const registry = createTreeTypeRegistry();
+
+const trees: Tree[] = [];
+
+trees.push({
+  x: 10,
+  y: 20,
+  type: registry.get("Oak", "green", "oak.png"),
+});
+
+trees.push({
+  x: 30,
+  y: 60,
+  type: registry.get("Oak", "green", "oak.png"),
+});
+
+trees.push({
+  x: 80,
+  y: 100,
+  type: registry.get("Pine", "dark-green", "pine.png"),
+});
+
+console.log(`Arboles creados: ${trees.length}`);
+console.log(`Tipos de árboles en el registro: ${registry.size()}`);
+
+console.log("\n-------------------- Flyweight OO ---------------------\n");
+const factory = new TreeTypeFactory();
+
+const trees2: TreeOO[] = [];
+
+trees2.push({
+  x: 10,
+  y: 20,
+  type: factory.getTreeType("Oak", "green", "oak.png"),
+});
+
+trees2.push({
+  x: 30,
+  y: 60,
+  type: factory.getTreeType("Oak", "green", "oak.png"),
+});
+
+trees2.push({
+  x: 80,
+  y: 100,
+  type: factory.getTreeType("Pine", "dark-green", "pine.png"),
+});
+
+console.log(`Arboles creados: ${trees2.length}`);
+console.log(`Tipos de árboles en la fábrica: ${factory.count()}`);
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 7: Proxy ---------------------\n");
 import {
   billingService,
   createBillingPermissionProxy,
   type User,
-} from "./6-proxy/proxy.js";
-import { type Image, LazyImageProxy } from "./6-proxy/proxy-oo.js";
+} from "./7-proxy/proxy.js";
+import { type Image, LazyImageProxy } from "./7-proxy/proxy-oo.js";
 
 console.log("\n-------------------- Proxy ---------------------\n");
 const user1: User = {
