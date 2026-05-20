@@ -3,7 +3,7 @@
 //   refund(invoiceId: string): Promise<void>;
 // };
 type BillingService = {
-  getInvoice(id: string): string;
+  getInvoice(id: string): string | undefined;
   refund(invoiceId: string): void;
 };
 
@@ -33,6 +33,7 @@ export const createBillingPermissionProxy = (
     getInvoice(id) {
       if (!user.permissions.includes("billing:read")) {
         console.log("No puedes leer facturas");
+        return;
       }
 
       return service.getInvoice(id);
