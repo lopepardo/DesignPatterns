@@ -218,3 +218,34 @@ const pdf = pdfFacade.createReportPdf({
 console.log("PDF generado:", pdf);
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------- 6: Proxy ---------------------\n");
+import {
+  billingService,
+  createBillingPermissionProxy,
+  type User,
+} from "./6-proxy/proxy.js";
+import { type Image, LazyImageProxy } from "./6-proxy/proxy-oo.js";
+
+console.log("\n-------------------- Proxy ---------------------\n");
+const user1: User = {
+  id: "u1",
+  permissions: ["billing:read"],
+};
+
+const securedBilling = createBillingPermissionProxy(billingService, user1);
+
+const invoice = securedBilling.getInvoice("inv-1"); // ok
+console.log("Factura obtenida:", invoice);
+const refund = securedBilling.refund("inv-1"); // error
+console.log("Reembolso realizado:", refund);
+
+console.log("\n-------------------- Proxy OO ---------------------\n");
+const image: Image = new LazyImageProxy("photo.png");
+
+console.log("Imagen creada, pero aún no cargada");
+
+image.display(); // carga y muestra
+image.display(); // solo muestra
+
+console.log("\n------------------------------------------------------------\n");
