@@ -1,4 +1,4 @@
-console.log("----------------- 1: Chain of Responsibility -----------------\n");
+console.log("----------------- 1: Chain of Responsibility -----------------");
 import {
   BillingHandler,
   GeneralHandler,
@@ -51,5 +51,32 @@ const order = pipe(
   [applyDiscount, applyTaxes, calculateFinalTotal],
 );
 console.log(order);
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("------------------------- 2. Command ------------------------");
+import {
+  Button,
+  CopyCommand,
+  PasteCommand,
+  TextEditor,
+} from "./2-command/command-oo.js";
+import { createButton, editor as editor2 } from "./2-command/command.js";
+
+console.log("\n---------------------- Command OO ----------------------\n");
+const editor = new TextEditor();
+
+const copyButton = new Button(new CopyCommand(editor));
+const pasteButton = new Button(new PasteCommand(editor));
+
+copyButton.click();
+pasteButton.click();
+
+console.log("\n------------------------ Command ------------------------\n");
+const copyButton2 = createButton(() => editor2.copy());
+const pasteButton2 = createButton(() => editor2.paste());
+
+copyButton2.click();
+pasteButton2.click();
 
 console.log("\n------------------------------------------------------------\n");
