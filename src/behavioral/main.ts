@@ -253,3 +253,56 @@ loginMediator.updatePassword("123456");
 loginMediator.submit();
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("----------------------- 6. Memento -----------------------\n");
+import {
+  EditorHistory,
+  TextEditor as TextEditorMemento,
+} from "./6-memento/memento-oo.js";
+import {
+  StateHistory,
+  updateContent,
+  type DocumentState,
+} from "./6-memento/memento.js";
+
+console.log("\n----------------------- Memento OO -----------------------\n");
+const editor3 = new TextEditorMemento();
+const history = new EditorHistory();
+
+history.push(editor3.save());
+
+editor3.type("Hola");
+console.log(editor3.getContent());
+history.push(editor3.save());
+
+editor3.type(" mundo");
+console.log(editor3.getContent());
+
+const previous = history.pop();
+if (previous) {
+  editor3.restore(previous);
+}
+console.log(editor3.getContent());
+
+console.log("\n------------------------- Memento ------------------------\n");
+let documentState: DocumentState = {
+  title: "Documento",
+  content: "",
+};
+
+const history2 = new StateHistory<DocumentState>();
+
+history2.push(documentState);
+documentState = updateContent(documentState, "Hola");
+console.log(documentState.content);
+
+history2.push(documentState);
+
+documentState = updateContent(documentState, "Hola mundo");
+console.log(documentState.content);
+
+const previous2 = history2.pop();
+if (previous2) {
+  documentState = previous2;
+}
+console.log(documentState.content);
