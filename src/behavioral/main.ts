@@ -215,3 +215,41 @@ for (const category of traverseDepthFirst(catalog)) {
 }
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("------------------------- 5. Mediator ------------------------");
+import {
+  TextInput,
+  Button as Button2,
+  LoginMediator,
+} from "./5-mediator/mediator-oo.js";
+import { createLoginMediator } from "./5-mediator/mediator.js";
+
+console.log("\n----------------------- Mediator OO ----------------------\n");
+const submitButton = new Button2();
+
+let mediator: LoginMediator;
+
+const emailInput = new TextInput("email", {
+  notify: (...args) => mediator.notify(...args),
+});
+
+const passwordInput = new TextInput("password", {
+  notify: (...args) => mediator.notify(...args),
+});
+
+mediator = new LoginMediator(emailInput, passwordInput, submitButton);
+
+emailInput.setValue("ana@example.com");
+submitButton.click();
+passwordInput.setValue("123456");
+submitButton.click();
+
+console.log("\n------------------------- Mediator ------------------------\n");
+const loginMediator = createLoginMediator();
+
+loginMediator.updateEmail("ana@example.com");
+loginMediator.submit();
+loginMediator.updatePassword("123456");
+loginMediator.submit();
+
+console.log("\n------------------------------------------------------------\n");
