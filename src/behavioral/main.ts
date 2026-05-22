@@ -80,3 +80,81 @@ copyButton2.click();
 pasteButton2.click();
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("---------------------- 3. Interpreter ------------------------");
+import {
+  AndExpression,
+  CountryIsExpression,
+  IsPremiumExpression,
+  MinimumAgeExpression,
+  OrExpression,
+  type User,
+} from "./3-interpreter/interpreter-oo.js";
+import {
+  and,
+  countryIs,
+  isPremium,
+  minimumAge,
+  or,
+} from "./3-interpreter/interpreter.js";
+import {
+  evaluateDiscountRule,
+  type DiscountRule,
+} from "./3-interpreter/interpreter-discount.js";
+
+console.log("\n---------------------- Interpreter OO ----------------------\n");
+// (user.isPremium AND user.country == "CO") OR user.age >= 65
+const rule = new OrExpression(
+  new AndExpression(new IsPremiumExpression(), new CountryIsExpression("CO")),
+  new MinimumAgeExpression(65),
+);
+
+const user: User = {
+  age: 70,
+  country: "MX",
+  isPremium: false,
+};
+
+console.log("¿El usuario cumple la regla?", rule.interpret(user));
+
+console.log("\n---------------------- Interpreter ----------------------\n");
+const rule2 = or(and(isPremium, countryIs("CO")), minimumAge(65));
+
+const user2: User = {
+  age: 30,
+  country: "CO",
+  isPremium: true,
+};
+
+console.log("¿El usuario cumple la regla?", rule2(user2));
+
+console.log("\n------------------ Interpreter discount ------------------\n");
+const discountRule: DiscountRule = {
+  type: "and",
+  rules: [
+    {
+      type: "customerIsPremium",
+    },
+    {
+      type: "totalGreaterThan",
+      amount: 100000,
+    },
+    {
+      type: "categoryIs",
+      category: "fashion",
+    },
+  ],
+};
+
+const applies = evaluateDiscountRule(discountRule, {
+  total: 150000,
+  category: "fashion",
+  customer: {
+    isPremium: true,
+    country: "CO",
+  },
+});
+
+console.log("¿Aplica el descuento?", applies);
+
+console.log("\n------------------------------------------------------------\n");
