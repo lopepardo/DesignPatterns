@@ -158,3 +158,60 @@ const applies = evaluateDiscountRule(discountRule, {
 console.log("¿Aplica el descuento?", applies);
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("------------------------- 4. Iterator ------------------------");
+import { TaskCollection } from "./4-iterator/iterator-oo.js";
+import { TaskCollectionTs } from "./4-iterator/iterator.js";
+import {
+  traverseDepthFirst,
+  type CategoryNode,
+} from "./4-iterator/iterator-tree.js";
+
+console.log("\n----------------------- Iterator OO -----------------------\n");
+const tasks = new TaskCollection();
+
+tasks.add({ id: "1", title: "Estudiar TypeScript" });
+tasks.add({ id: "2", title: "Practicar patrones" });
+
+const iterator = tasks.createIterator();
+
+while (iterator.hasNext()) {
+  const task = iterator.next();
+  console.log(task);
+}
+
+console.log("\n------------------------- Iterator ------------------------\n");
+const tasks2 = new TaskCollectionTs();
+
+tasks2.add({ id: "1", title: "Estudiar TypeScript" });
+tasks2.add({ id: "2", title: "Practicar patrones" });
+
+for (const task of tasks2) {
+  console.log(task);
+}
+
+console.log("\n------------------------------------------------------------\n");
+const catalog: CategoryNode = {
+  name: "Tienda",
+  children: [
+    {
+      name: "Ropa",
+      children: [
+        { name: "Camisas", children: [] },
+        { name: "Zapatos", children: [] },
+      ],
+    },
+    {
+      name: "Tecnología",
+      children: [{ name: "Celulares", children: [] }],
+    },
+  ],
+};
+
+for (const category of traverseDepthFirst(catalog)) {
+  console.log(
+    category.children.length > 0 ? category.name : `- ${category.name}`,
+  );
+}
+
+console.log("\n------------------------------------------------------------\n");
