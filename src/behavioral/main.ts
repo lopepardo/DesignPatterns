@@ -306,3 +306,81 @@ if (previous2) {
   documentState = previous2;
 }
 console.log(documentState.content);
+
+console.log("\n------------------------------------------------------------\n");
+
+console.log("------------------------- 7. Observer ------------------------");
+import {
+  AnalyticsTracker,
+  EmailPriceAlert,
+  Subject,
+  type PriceChange,
+} from "./7-observer/observer-oo.js";
+import { createObservable, type OrderCreated } from "./7-observer/observer.js";
+import {
+  createEventBus,
+  type DomainEvent,
+} from "./7-observer/observer-orders.js";
+
+console.log("\n----------------------- Observer OO -----------------------\n");
+const priceSubject = new Subject<PriceChange>();
+
+const emailAlert = new EmailPriceAlert();
+const analytics = new AnalyticsTracker();
+
+priceSubject.subscribe(emailAlert);
+priceSubject.subscribe(analytics);
+
+priceSubject.notify({
+  productId: "product-1",
+  oldPrice: 100000,
+  newPrice: 85000,
+});
+
+console.log("\n------------------------- Observer ------------------------\n");
+
+const orderCreated = createObservable<OrderCreated>();
+
+const unsubscribeEmail = orderCreated.subscribe((event) => {
+  console.log(`Enviar email a ${event.customerEmail}`);
+});
+orderCreated.subscribe((event) => {
+  console.log(`Registrar analytics para pedido ${event.orderId}`);
+});
+
+orderCreated.notify({
+  orderId: "order-123",
+  customerEmail: "ana@example.com",
+});
+
+console.log(
+  "\n----------------------- Observer Orders -----------------------\n",
+);
+const eventBus = createEventBus<DomainEvent>();
+
+eventBus.subscribe("order_created", async (event) => {
+  if (event.type !== "order_created") return;
+
+  console.log(`Enviar email a ${event.customerEmail}`);
+});
+eventBus.subscribe("order_created", (event) => {
+  console.log(`Registrar analytics para ${event.orderId}`);
+});
+eventBus.subscribe("payment_confirmed", (event) => {
+  if (event.type !== "payment_confirmed") return;
+
+  console.log(`Registrar pago de ${event.amount} para ${event.orderId}`);
+});
+
+await eventBus.publish({
+  type: "order_created",
+  orderId: "order-123",
+  customerEmail: "ana@example.com",
+});
+await eventBus.publish({
+  type: "payment_confirmed",
+  orderId: "order-123",
+  amount: 85000,
+});
+
+console.log("\n------------------------------------------------------------\n");
