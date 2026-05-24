@@ -1,167 +1,146 @@
-# Patrón de comportamiento 6: Memento
+# Patrón de comportamiento 7: Observer
 
 ## Qué problema intenta resolver
 
-Memento intenta resolver el problema de guardar y restaurar el estado anterior de un objeto **sin exponer sus detalles internos**.
+Observer intenta resolver el problema de notificar automáticamente a varios interesados cuando algo cambia, sin que el objeto que cambia tenga que conocer detalles concretos de todos ellos.
 
-El caso típico es un editor con deshacer:
+Imagina una tienda online. Cuando se crea un pedido, varias cosas podrían necesitar enterarse:
 
 ```txt
-usuario escribe texto
-usuario cambia formato
-usuario borra una sección
-usuario presiona Ctrl + Z
+- enviar email de confirmación
+- actualizar inventario
+- registrar analytics
+- notificar al área logística
+- generar factura
 ```
 
-Para poder volver atrás, el sistema necesita recordar cómo estaba el objeto antes.
-
-Una solución ingenua sería exponer todo el estado interno:
+Una solución directa sería hacer esto:
 
 ```ts
-const previousState = editor.content;
+async function createOrder(order: Order) {
+  await saveOrder(order);
+  await sendConfirmationEmail(order);
+  await updateInventory(order);
+  await trackAnalytics(order);
+  await generateInvoice(order);
+}
 ```
 
-Pero si el objeto tiene estructura compleja, eso puede romper encapsulamiento:
+Esto funciona, pero el problema es que `createOrder` empieza a conocer demasiadas consecuencias del evento “pedido creado”.
+
+Cada vez que aparece una nueva reacción, modificas la función principal:
 
 ```ts
-const previousState = {
-  content: editor.content,
-  cursor: editor.cursor,
-  selection: editor.selection,
-  formatting: editor.formatting,
-  internalCache: editor.internalCache,
-};
+await notifyWarehouse(order);
+await sendWhatsApp(order);
+await updateRecommendationModel(order);
 ```
 
-Ahora el código externo sabe demasiado sobre cómo funciona `editor`.
+Observer responde a esta pregunta:
 
-Memento responde a esta pregunta:
-
-**“¿Cómo guardo una fotografía del estado de un objeto para restaurarlo después, sin que otros objetos conozcan su estructura interna?”**
+**“¿Cómo permito que varios objetos o funciones reaccionen a un cambio sin acoplar fuertemente al emisor con todos los receptores?”**
 
 ---
 
 ## Qué idea propone como solución
 
-La idea central es que el propio objeto cree una “captura” de su estado.
+La idea central es tener un objeto observable, también llamado **Subject**, que mantiene una lista de observadores.
 
-Esa captura se llama **memento**.
+Cuando ocurre algo importante, el subject notifica a sus observadores.
 
 Conceptualmente:
 
 ```txt
-Originator → crea → Memento
-Caretaker → guarda → Memento
-Originator → restaura desde → Memento
+Subject
+  ├── Observer A
+  ├── Observer B
+  └── Observer C
 ```
 
-Los roles clásicos son:
+El subject no necesita saber exactamente qué hace cada observador. Solo sabe que puede notificarles.
 
-**Originator**: el objeto cuyo estado quieres guardar. Por ejemplo, un editor.
+En forma general:
 
-**Memento**: la captura del estado.
+```ts
+subject.subscribe(observer);
+subject.notify(event);
+```
 
-**Caretaker**: el objeto que guarda los mementos. Por ejemplo, un historial de undo.
+Los observadores reaccionan:
 
-Lo importante es que el caretaker no necesita entender el contenido del memento. Solo lo guarda y se lo devuelve al originator cuando haga falta.
-
-```txt
-Editor sabe crear/restaurar su estado.
-History solo guarda snapshots.
+```ts
+observer.update(event);
 ```
 
 Con SOLID:
 
-Memento ayuda con **SRP**, porque separa la lógica del objeto principal de la lógica del historial.
+Observer puede ayudar con **OCP**, porque puedes agregar nuevas reacciones sin modificar el subject.
 
-También protege el encapsulamiento, porque evita que objetos externos manipulen detalles internos.
+También ayuda con **DIP**, porque el subject depende de una abstracción de observador, no de implementaciones concretas.
 
-Pero puede consumir mucha memoria si guardas snapshots grandes con demasiada frecuencia.
+Pero hay un riesgo: si se usa sin cuidado, el flujo del programa se vuelve difícil de seguir porque una acción dispara muchas consecuencias indirectas.
 
 ---
 
 ## Ejemplo de mal uso o mala interpretación
 
-Un mal uso común es guardar referencias mutables en vez de copias reales.
+Un mal uso común es usar Observer para esconder lógica esencial del flujo principal.
+
+Por ejemplo:
 
 ```ts
-type EditorState = {
-  content: string[];
-};
-
-class Editor {
-  private state: EditorState = {
-    content: [],
-  };
-
-  save(): EditorState {
-    return this.state;
-  }
-}
+await createOrder(order);
 ```
 
-Esto no crea una captura. Devuelve la misma referencia.
-
-Si luego modificas el estado:
-
-```ts
-editor.getState().content.push("nuevo texto");
-```
-
-el “memento” también cambia, porque apunta al mismo objeto.
-
-Una versión más segura:
-
-```ts
-save(): EditorState {
-  return {
-    content: [...this.state.content],
-  };
-}
-```
-
-O, si el estado lo permite:
-
-```ts
-save(): EditorState {
-  return structuredClone(this.state);
-}
-```
-
-Otro mal uso es guardar demasiados snapshots grandes sin límite.
-
-```ts
-history.push(editor.save());
-```
-
-si el documento pesa varios megabytes y haces esto cada vez que el usuario escribe una letra, puedes consumir mucha memoria.
-
-En ese caso quizá necesitas:
+Y por detrás, sin que sea claro, se disparan diez efectos:
 
 ```txt
-- snapshots cada cierto intervalo;
-- comandos reversibles;
-- diferencias incrementales;
-- compresión;
-- límite de historial;
-- persistencia externa.
+- cobrar pago
+- actualizar inventario
+- enviar factura
+- cambiar estado del usuario
+- notificar logística
 ```
 
-Otro error es exponer el memento para que otros objetos lo modifiquen.
+Si esas acciones son obligatorias para que el caso de uso sea correcto, quizá no deberían quedar como observadores invisibles.
+
+Hay una diferencia importante:
+
+```txt
+Consecuencia secundaria:
+  enviar analytics, notificar, registrar auditoría.
+
+Parte esencial del caso de uso:
+  cobrar, reservar inventario, crear pedido.
+```
+
+Las partes esenciales suelen ser mejor coordinadas explícitamente por un servicio, facade, workflow o transacción.
+
+Otro mal uso es olvidarse de desuscribirse.
 
 ```ts
-const snapshot = editor.save();
-snapshot.content = "hack";
-editor.restore(snapshot);
+observable.subscribe(renderComponent);
 ```
 
-Puedes reducir ese riesgo usando `Readonly`:
+Si el componente desaparece pero sigue suscrito, puede haber memory leaks o actualizaciones indebidas.
+
+Por eso es útil devolver `unsubscribe`:
 
 ```ts
-type EditorMemento = Readonly<{
-  content: string;
-}>;
+const unsubscribe = observable.subscribe(observer);
+
+unsubscribe();
 ```
+
+Otro problema es depender del orden de observadores sin hacerlo explícito.
+
+```ts
+subject.subscribe(validate);
+subject.subscribe(save);
+subject.subscribe(sendEmail);
+```
+
+Si `sendEmail` depende de que `save` haya ocurrido, quizá Observer no es la abstracción correcta o necesitas un pipeline/chain más explícito.
 
 ---
 
@@ -169,73 +148,94 @@ type EditorMemento = Readonly<{
 
 Conviene aplicarlo cuando:
 
-Necesitas undo/redo.
+Varios interesados deben reaccionar a un cambio.
 
-Quieres restaurar estados anteriores.
+El emisor no debería conocer a todos los receptores.
 
-Quieres guardar puntos de recuperación.
+Quieres permitir suscripciones dinámicas.
 
-Quieres implementar snapshots.
+Las reacciones son opcionales, extensibles o secundarias.
 
-Quieres preservar encapsulamiento del objeto original.
-
-La operación inversa es difícil de calcular.
+Quieres desacoplar eventos de sus consecuencias.
 
 Casos típicos:
 
-Editores de texto.
+Eventos de UI.
 
-Editores gráficos.
+Cambios de estado.
 
-Formularios complejos.
+Notificaciones.
 
-Juegos.
+Sistemas de plugins.
 
-Asistentes paso a paso.
+Eventos de dominio.
 
-Transacciones en memoria.
+Actualización de vistas.
 
-Time travel debugging.
+Stores reactivos.
 
-Configuraciones que pueden restaurarse.
+WebSockets.
+
+Auditoría y analytics.
 
 Por ejemplo:
 
 ```ts
-history.push(editor.save());
-editor.applyFormatting();
+orderCreated.subscribe(sendConfirmationEmail);
+orderCreated.subscribe(trackAnalytics);
+orderCreated.subscribe(notifyWarehouse);
 ```
 
-tiene sentido si necesitas poder volver al estado anterior.
+Tiene sentido si esas reacciones pueden agregarse o quitarse sin modificar la creación del pedido.
 
 ---
 
 Puede ser innecesario cuando:
 
-El estado es trivial.
+Solo hay un receptor.
 
-No necesitas restaurar nada.
+La secuencia debe ser estrictamente controlada.
 
-La operación inversa es más simple que guardar un snapshot.
+Las acciones son parte esencial de una transacción.
 
-Los snapshots son muy grandes.
+El flujo debe ser muy explícito para ser comprensible.
 
-El historial puede reemplazarse con logs de eventos o comandos.
+El patrón oculta efectos secundarios importantes.
 
-Por ejemplo, si tienes un contador:
-
-```ts
-counter++;
-```
-
-puede ser más simple deshacer con:
+Por ejemplo:
 
 ```ts
-counter--;
+await payment.charge(order);
+await order.markAsPaid();
 ```
 
-que guardar snapshots completos del contador.
+Probablemente no conviene esconder eso detrás de un evento si la consistencia del sistema depende de ambos pasos.
 
 ---
 
-La idea clave: **Memento guarda y restaura estados anteriores sin exponer los detalles internos del objeto original**. En TypeScript puede implementarse con objetos snapshot, copias inmutables, `structuredClone`, historiales genéricos o estados serializables. Es muy útil para undo/redo y recuperación, pero debe usarse con cuidado por consumo de memoria y referencias mutables.
+## 6. Analogía sencilla
+
+Imagina un canal de noticias.
+
+El canal publica una noticia:
+
+```txt
+“Hay una nueva promoción”
+```
+
+Varias personas suscritas la reciben:
+
+```txt
+- una persona la lee en el celular
+- otra recibe un email
+- otra la ve en una app
+- otra la ignora
+```
+
+El canal no necesita llamar personalmente a cada persona ni saber qué hará cada una con la noticia.
+
+Observer funciona igual: un objeto anuncia que algo cambió, y varios observadores reaccionan.
+
+---
+
+La idea clave: **Observer permite que varios interesados reaccionen a eventos o cambios sin acoplar fuertemente al emisor con cada receptor**. En TypeScript suele expresarse muy bien con funciones `subscribe`, callbacks, event buses simples, stores o listeners. Es útil para eventos y reacciones secundarias; puede ser peligroso si oculta lógica esencial o efectos secundarios difíciles de rastrear.

@@ -384,3 +384,29 @@ await eventBus.publish({
 });
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("-------------------------- 8. State --------------------------\n");
+import { OrderOO } from "./8-state/state-oo.js";
+import { payOrder, shipOrder, type Order } from "./8-state/state.js";
+
+console.log("\n------------------------- State OO -------------------------\n");
+const order2 = new OrderOO();
+
+order2.pay();
+order2.ship();
+order2.cancel();
+
+console.log("\n--------------------------- State --------------------------\n");
+let order3: Order = {
+  id: "order-1",
+  state: {
+    status: "draft",
+  },
+};
+console.log(order3);
+order3 = payOrder(order3, "payment-1");
+console.log(order3);
+order3 = shipOrder(order3, "TRACK-123");
+console.log(order3);
+
+console.log("\n------------------------------------------------------------\n");
