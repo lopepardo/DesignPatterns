@@ -456,3 +456,27 @@ console.log(
 );
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("--------------------- 10. Template Method --------------------\n");
+import {
+  CsvFileProcessor,
+  JsonFileProcessor,
+} from "./10-template-method/template-method-oo.js";
+import {
+  csvProcessorConfig,
+  jsonProcessorConfig,
+  processFile,
+} from "./10-template-method/template-method.js";
+
+console.log("\n------------------- Template Method OO -------------------\n");
+const csvProcessor = new CsvFileProcessor();
+csvProcessor.process("users.csv");
+
+const jsonProcessor = new JsonFileProcessor();
+jsonProcessor.process("users.json");
+
+console.log("\n--------------------- Template Method ---------------------\n");
+processFile("users.csv", csvProcessorConfig);
+processFile("users.json", jsonProcessorConfig);
+
+console.log("\n------------------------------------------------------------\n");
