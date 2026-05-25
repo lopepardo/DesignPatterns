@@ -480,3 +480,54 @@ processFile("users.csv", csvProcessorConfig);
 processFile("users.json", jsonProcessorConfig);
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("----------------------- 11. Visitor -----------------------\n");
+import {
+  Addition,
+  EvaluateVisitor,
+  Multiplication,
+  NumberLiteral,
+  PrintVisitor,
+} from "./11-visitor/visitor-oo.js";
+import {
+  evaluate,
+  printExpression,
+  type Expression,
+} from "./11-visitor/visitor.js";
+
+console.log("\n------------------------ Visitor OO ------------------------\n");
+const expression = new Multiplication(
+  new Addition(new NumberLiteral(2), new NumberLiteral(3)),
+  new NumberLiteral(4),
+);
+
+const printed = expression.accept(new PrintVisitor());
+const result3 = expression.accept(new EvaluateVisitor());
+
+console.log("La expresión es:", printed);
+console.log("El resultado es:", result3);
+
+console.log("\n------------------------- Visitor ------------------------\n");
+const expression2: Expression = {
+  type: "multiplication",
+  left: {
+    type: "addition",
+    left: {
+      type: "number",
+      value: 2,
+    },
+    right: {
+      type: "number",
+      value: 3,
+    },
+  },
+  right: {
+    type: "number",
+    value: 4,
+  },
+};
+
+console.log("La expresión es:", printExpression(expression2));
+console.log("El resultado es:", evaluate(expression2));
+
+console.log("\n------------------------------------------------------------\n");
