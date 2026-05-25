@@ -410,3 +410,49 @@ order3 = shipOrder(order3, "TRACK-123");
 console.log(order3);
 
 console.log("\n------------------------------------------------------------\n");
+
+console.log("------------------------- 9. Strategy ------------------------\n");
+import {
+  calculateTotal,
+  expressShipping,
+  pickupShipping,
+  standardShipping,
+  type OrderStrategy,
+} from "./9-strategy/strategy.js";
+import {
+  CheckoutCalculator,
+  ExpressShipping,
+  StandardShipping,
+} from "./9-strategy/strategy-oo.js";
+
+console.log("\n----------------------- Strategy OO -----------------------\n");
+const order4: OrderStrategy = {
+  subtotal: 100000,
+  weight: 2,
+};
+const checkoutStandard = new CheckoutCalculator(new StandardShipping());
+const checkoutExpress = new CheckoutCalculator(new ExpressShipping());
+
+console.log("Total con envío estándar:", checkoutStandard.calculate(order4));
+console.log("Total con envío express:", checkoutExpress.calculate(order4));
+
+console.log("\n------------------------- Strategy ------------------------\n");
+const order5: OrderStrategy = {
+  subtotal: 100000,
+  weight: 2,
+};
+
+console.log(
+  "Total con envío estándar:",
+  calculateTotal(order5, standardShipping),
+);
+console.log(
+  "Total con envío express:",
+  calculateTotal(order5, expressShipping),
+);
+console.log(
+  "Total con recogida en tienda:",
+  calculateTotal(order5, pickupShipping),
+);
+
+console.log("\n------------------------------------------------------------\n");
