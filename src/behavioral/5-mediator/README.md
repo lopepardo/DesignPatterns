@@ -52,7 +52,7 @@ D habla con todos
 
 Mediator responde a esta pregunta:
 
-**“¿Cómo coordino la comunicación entre varios objetos sin que todos tengan que conocerse directamente entre sí?”**
+> ¿Cómo coordino la comunicación entre varios objetos sin que todos tengan que conocerse directamente entre sí?
 
 ---
 
@@ -95,13 +95,11 @@ activar botón limpiar
 actualizar contador
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Ayuda con **SRP** si separa la lógica de coordinación de los componentes individuales.
-
-Puede ayudar con **DIP** porque los componentes dependen de una abstracción de comunicación, no de otros componentes concretos.
-
-Puede ayudar con **OCP** si agregar nuevos componentes o eventos no obliga a modificar todos los componentes existentes.
+- **SRP** si separa la lógica de coordinación de los componentes individuales.
+- **DIP** porque los componentes dependen de una abstracción de comunicación, no de otros componentes concretos.
+- **OCP** si agregar nuevos componentes o eventos no obliga a modificar todos los componentes existentes.
 
 Pero tiene un riesgo claro: el mediador puede convertirse en un objeto gigante que concentra demasiada lógica.
 
@@ -169,31 +167,21 @@ Puede ser correcto en una capa de aplicación, pero si esas reglas son centrales
 
 Conviene aplicarlo cuando:
 
-Hay varios componentes que necesitan coordinarse.
-
-Las dependencias entre ellos empiezan a formar una red compleja.
-
-Quieres evitar que cada componente conozca a todos los demás.
-
-La lógica de interacción pertenece a un flujo común.
-
-Quieres centralizar coordinación sin meterla en cada componente individual.
+- Hay varios componentes que necesitan coordinarse.
+- Las dependencias entre ellos empiezan a formar una red compleja.
+- Quieres evitar que cada componente conozca a todos los demás.
+- La lógica de interacción pertenece a un flujo común.
+- Quieres centralizar coordinación sin meterla en cada componente individual.
 
 Casos típicos:
 
-Formularios complejos.
-
-Pantallas con muchos componentes relacionados.
-
-Salas de chat.
-
-Workflows de checkout.
-
-Coordinación entre módulos de UI.
-
-Sistemas de eventos controlados.
-
-Componentes de escritorio, como diálogos con muchos controles.
+- Formularios complejos.
+- Pantallas con muchos componentes relacionados.
+- Salas de chat.
+- Workflows de checkout.
+- Coordinación entre módulos de UI.
+- Sistemas de eventos controlados.
+- Componentes de escritorio, como diálogos con muchos controles.
 
 Por ejemplo:
 
@@ -207,15 +195,11 @@ Ahí un mediador puede ser útil.
 
 Puede ser innecesario cuando:
 
-Solo hay dos objetos con una relación simple.
-
-Una llamada directa es clara y suficiente.
-
-El mediador solo reenvía llamadas sin aportar coordinación.
-
-El flujo se vuelve más difícil de seguir por centralizar demasiado.
-
-El mediador empieza a absorber responsabilidades de dominio, infraestructura y UI al mismo tiempo.
+- Solo hay dos objetos con una relación simple.
+- Una llamada directa es clara y suficiente.
+- El mediador solo reenvía llamadas sin aportar coordinación.
+- El flujo se vuelve más difícil de seguir por centralizar demasiado.
+- El mediador empieza a absorber responsabilidades de dominio, infraestructura y UI al mismo tiempo.
 
 Por ejemplo:
 
@@ -227,4 +211,5 @@ No necesita un mediador si no hay múltiples participantes coordinándose.
 
 ---
 
-La idea clave: **Mediator centraliza la coordinación entre varios objetos o componentes para evitar una red de dependencias directas entre ellos**. En TypeScript puede ser una clase, una función, un módulo, un store, un controlador o un componente padre. Conviene cuando hay interacción compleja real; puede ser excesivo cuando solo reemplaza llamadas directas simples.
+> [!IMPORTANT]
+> **Mediator centraliza la coordinación entre varios objetos o componentes para evitar una red de dependencias directas entre ellos**. En TypeScript puede ser una clase, una función, un módulo, un store, un controlador o un componente padre. Conviene cuando hay interacción compleja real; puede ser excesivo cuando solo reemplaza llamadas directas simples.

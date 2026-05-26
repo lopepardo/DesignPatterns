@@ -49,7 +49,7 @@ Hay duplicación en la estructura del algoritmo.
 
 Template Method responde a esta pregunta:
 
-**“¿Cómo defino el esqueleto de un algoritmo una sola vez, permitiendo que algunos pasos sean personalizados?”**
+> ¿Cómo defino el esqueleto de un algoritmo una sola vez, permitiendo que algunos pasos sean personalizados?
 
 ---
 
@@ -85,11 +85,10 @@ export()
 
 El método plantilla controla el orden. Las subclases no deciden la secuencia completa; solo completan partes específicas.
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Template Method puede ayudar con **OCP**, porque puedes crear nuevas variantes del algoritmo sin modificar el esqueleto base.
-
-También puede ayudar con **SRP**, porque el flujo común queda separado de los detalles específicos.
+- **OCP**, porque puedes crear nuevas variantes del algoritmo sin modificar el esqueleto base.
+- **SRP**, porque el flujo común queda separado de los detalles específicos.
 
 Pero hay una advertencia importante: Template Method se basa en **herencia**. En TypeScript, muchas veces una solución con composición, funciones y estrategias puede ser más flexible y más simple.
 
@@ -153,33 +152,22 @@ Por ejemplo, si una subclase redefine un hook y evita validar datos críticos, e
 
 Conviene aplicarlo cuando:
 
-Tienes varios algoritmos con la misma estructura general.
-
-Quieres evitar duplicar el orden de pasos.
-
-Algunos pasos cambian entre variantes.
-
-Quieres controlar la secuencia desde un lugar central.
-
-Hay invariantes del proceso que no deberían cambiar.
+- Tienes varios algoritmos con la misma estructura general.
+- Quieres evitar duplicar el orden de pasos.
+- Algunos pasos cambian entre variantes.
+- Quieres controlar la secuencia desde un lugar central.
+- Hay invariantes del proceso que no deberían cambiar.
 
 Casos típicos:
 
-Importadores de datos.
-
-Generadores de reportes.
-
-Procesadores de archivos.
-
-Pipelines de validación.
-
-Algoritmos de build/deploy.
-
-Flujos de scraping.
-
-Procesamiento de pagos con pasos comunes.
-
-Testing frameworks con setup, ejecución y teardown.
+- Importadores de datos.
+- Generadores de reportes.
+- Procesadores de archivos.
+- Pipelines de validación.
+- Algoritmos de build/deploy.
+- Flujos de scraping.
+- Procesamiento de pagos con pasos comunes.
+- Testing frameworks con setup, ejecución y teardown.
 
 Por ejemplo:
 
@@ -193,17 +181,12 @@ es un caso natural para Template Method.
 
 Puede ser innecesario cuando:
 
-Solo hay una variante.
-
-La estructura común no es estable.
-
-Los pasos personalizados son demasiados.
-
-La herencia vuelve el diseño rígido.
-
-Una función de orden superior o composición de estrategias expresa mejor el flujo.
-
-El algoritmo no tiene invariantes importantes que proteger.
+- Solo hay una variante.
+- La estructura común no es estable.
+- Los pasos personalizados son demasiados.
+- La herencia vuelve el diseño rígido.
+- Una función de orden superior o composición de estrategias expresa mejor el flujo.
+- El algoritmo no tiene invariantes importantes que proteger.
 
 Por ejemplo:
 
@@ -215,4 +198,5 @@ no necesita Template Method si solo estás parseando CSV sin flujo común reutil
 
 ---
 
-La idea clave: **Template Method define el esqueleto de un algoritmo y deja que algunos pasos varíen**. En su forma clásica usa herencia, pero en TypeScript muchas veces conviene expresarlo con funciones, objetos de configuración, composición o estrategias. Es útil cuando el flujo común es estable; puede ser excesivo cuando solo introduce una clase base rígida sin una necesidad real.
+> [!IMPORTANT]
+> **Template Method define el esqueleto de un algoritmo y deja que algunos pasos varíen**. En su forma clásica usa herencia, pero en TypeScript muchas veces conviene expresarlo con funciones, objetos de configuración, composición o estrategias. Es útil cuando el flujo común es estable; puede ser excesivo cuando solo introduce una clase base rígida sin una necesidad real.

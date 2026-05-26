@@ -28,7 +28,7 @@ for (const item of collection) {
 
 Iterator responde a esta pregunta:
 
-**“¿Cómo permito recorrer una colección de elementos de forma uniforme sin revelar cómo está construida por dentro?”**
+> ¿Cómo permito recorrer una colección de elementos de forma uniforme sin revelar cómo está construida por dentro?
 
 El problema no es solo “hacer un `for`”. El problema es separar:
 
@@ -89,11 +89,10 @@ for (const item of iterable) {
 }
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Iterator ayuda con **SRP**, porque la colección no tiene que mezclar toda la lógica de recorrido con su estructura principal.
-
-También ayuda con **OCP**, porque puedes agregar nuevas formas de recorrido sin cambiar el uso básico de la colección.
+- **SRP**, porque la colección no tiene que mezclar toda la lógica de recorrido con su estructura principal.
+- **OCP**, porque puedes agregar nuevas formas de recorrido sin cambiar el uso básico de la colección.
 
 Pero no siempre necesitas implementarlo manualmente. En TypeScript, arrays, maps, sets, strings y muchas APIs ya son iterables.
 
@@ -156,37 +155,24 @@ pero puede estar haciendo muchas llamadas HTTP. Eso no está mal, pero conviene 
 
 Conviene aplicarlo cuando:
 
-Tienes una colección con estructura interna compleja.
-
-Quieres ofrecer una forma uniforme de recorrer elementos.
-
-Quieres múltiples formas de recorrido.
-
-Quieres recorrer datos de forma perezosa.
-
-Quieres evitar cargar todo en memoria.
-
-Quieres ocultar paginación, cursores o streaming.
+- Tienes una colección con estructura interna compleja.
+- Quieres ofrecer una forma uniforme de recorrer elementos.
+- Quieres múltiples formas de recorrido.
+- Quieres recorrer datos de forma perezosa.
+- Quieres evitar cargar todo en memoria.
+- Quieres ocultar paginación, cursores o streaming.
 
 Casos típicos:
 
-Árboles.
-
-Grafos.
-
-Paginación de APIs.
-
-Lectura de archivos línea por línea.
-
-Cursores de base de datos.
-
-Resultados grandes.
-
-Streams.
-
-Secuencias infinitas.
-
-Estructuras personalizadas.
+- Árboles.
+- Grafos.
+- Paginación de APIs.
+- Lectura de archivos línea por línea.
+- Cursores de base de datos.
+- Resultados grandes.
+- Streams.
+- Secuencias infinitas.
+- Estructuras personalizadas.
 
 Por ejemplo:
 
@@ -202,15 +188,11 @@ tiene mucho sentido porque no quieres cargar toda la tabla en memoria.
 
 Puede ser innecesario cuando:
 
-Ya tienes un array simple.
-
-No hay estructura interna que ocultar.
-
-No necesitas recorrido perezoso.
-
-No hay múltiples formas de recorrido.
-
-El iterador personalizado agrega más código que claridad.
+- Ya tienes un array simple.
+- No hay estructura interna que ocultar.
+- No necesitas recorrido perezoso.
+- No hay múltiples formas de recorrido.
+- El iterador personalizado agrega más código que claridad.
 
 Por ejemplo:
 
@@ -222,4 +204,5 @@ puede ser mejor que construir un iterador si solo estás transformando una lista
 
 ---
 
-La idea clave: **Iterator permite recorrer elementos sin exponer la estructura interna de la colección**. En TypeScript, lo más idiomático suele ser usar `Symbol.iterator`, generadores con `yield`, o `async generators` para datos paginados o remotos. No necesitas implementarlo manualmente si un array, `map`, `filter` o `for...of` ya expresa claramente la intención.
+> [!IMPORTANT]
+> **Iterator permite recorrer elementos sin exponer la estructura interna de la colección**. En TypeScript, lo más idiomático suele ser usar `Symbol.iterator`, generadores con `yield`, o `async generators` para datos paginados o remotos. No necesitas implementarlo manualmente si un array, `map`, `filter` o `for...of` ya expresa claramente la intención.

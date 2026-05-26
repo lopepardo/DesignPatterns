@@ -37,7 +37,7 @@ Ahora el código externo sabe demasiado sobre cómo funciona `editor`.
 
 Memento responde a esta pregunta:
 
-**“¿Cómo guardo una fotografía del estado de un objeto para restaurarlo después, sin que otros objetos conozcan su estructura interna?”**
+> ¿Cómo guardo una fotografía del estado de un objeto para restaurarlo después, sin que otros objetos conozcan su estructura interna?
 
 ---
 
@@ -70,11 +70,10 @@ Editor sabe crear/restaurar su estado.
 History solo guarda snapshots.
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Memento ayuda con **SRP**, porque separa la lógica del objeto principal de la lógica del historial.
-
-También protege el encapsulamiento, porque evita que objetos externos manipulen detalles internos.
+- **SRP**, porque separa la lógica del objeto principal de la lógica del historial.
+- Protege el encapsulamiento, porque evita que objetos externos manipulen detalles internos.
 
 Pero puede consumir mucha memoria si guardas snapshots grandes con demasiada frecuencia.
 
@@ -171,33 +170,22 @@ Conviene aplicarlo cuando:
 
 Necesitas undo/redo.
 
-Quieres restaurar estados anteriores.
-
-Quieres guardar puntos de recuperación.
-
-Quieres implementar snapshots.
-
-Quieres preservar encapsulamiento del objeto original.
-
-La operación inversa es difícil de calcular.
+- Quieres restaurar estados anteriores.
+- Quieres guardar puntos de recuperación.
+- Quieres implementar snapshots.
+- Quieres preservar encapsulamiento del objeto original.
+- La operación inversa es difícil de calcular.
 
 Casos típicos:
 
-Editores de texto.
-
-Editores gráficos.
-
-Formularios complejos.
-
-Juegos.
-
-Asistentes paso a paso.
-
-Transacciones en memoria.
-
-Time travel debugging.
-
-Configuraciones que pueden restaurarse.
+- Editores de texto.
+- Editores gráficos.
+- Formularios complejos.
+- Juegos.
+- Asistentes paso a paso.
+- Transacciones en memoria.
+- Time travel debugging.
+- Configuraciones que pueden restaurarse.
 
 Por ejemplo:
 
@@ -212,15 +200,11 @@ tiene sentido si necesitas poder volver al estado anterior.
 
 Puede ser innecesario cuando:
 
-El estado es trivial.
-
-No necesitas restaurar nada.
-
-La operación inversa es más simple que guardar un snapshot.
-
-Los snapshots son muy grandes.
-
-El historial puede reemplazarse con logs de eventos o comandos.
+- El estado es trivial.
+- No necesitas restaurar nada.
+- La operación inversa es más simple que guardar un snapshot.
+- Los snapshots son muy grandes.
+- El historial puede reemplazarse con logs de eventos o comandos.
 
 Por ejemplo, si tienes un contador:
 
@@ -238,4 +222,5 @@ que guardar snapshots completos del contador.
 
 ---
 
-La idea clave: **Memento guarda y restaura estados anteriores sin exponer los detalles internos del objeto original**. En TypeScript puede implementarse con objetos snapshot, copias inmutables, `structuredClone`, historiales genéricos o estados serializables. Es muy útil para undo/redo y recuperación, pero debe usarse con cuidado por consumo de memoria y referencias mutables.
+> [!IMPORTANT]
+> **Memento guarda y restaura estados anteriores sin exponer los detalles internos del objeto original**. En TypeScript puede implementarse con objetos snapshot, copias inmutables, `structuredClone`, historiales genéricos o estados serializables. Es muy útil para undo/redo y recuperación, pero debe usarse con cuidado por consumo de memoria y referencias mutables.

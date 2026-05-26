@@ -62,7 +62,7 @@ El problema no es usar `if`. El problema es que las reglas de estado se dispersa
 
 State responde a esta pregunta:
 
-**“¿Cómo hago que un objeto cambie su comportamiento según su estado, sin llenar el código de condicionales repetidos?”**
+> ¿Cómo hago que un objeto cambie su comportamiento según su estado, sin llenar el código de condicionales repetidos?
 
 ---
 
@@ -98,13 +98,11 @@ PaidState.cancel → reembolsa y cambia a cancelled
 ShippedState.cancel → error
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-State puede ayudar con **SRP**, porque cada estado concentra sus propias reglas.
-
-Puede ayudar con **OCP**, porque puedes agregar nuevos estados sin modificar un gran bloque de condicionales.
-
-También conecta con **LSP**, porque cada estado debe respetar una interfaz común, aunque no todas las operaciones sean válidas en todos los estados. Aquí hay que diseñar con cuidado para no terminar con métodos que lanzan errores por todas partes.
+- **SRP**, porque cada estado concentra sus propias reglas.
+- **OCP**, porque puedes agregar nuevos estados sin modificar un gran bloque de condicionales.
+- **LSP**, porque cada estado debe respetar una interfaz común, aunque no todas las operaciones sean válidas en todos los estados. Aquí hay que diseñar con cuidado para no terminar con métodos que lanzan errores por todas partes.
 
 En TypeScript, muchas veces una unión discriminada y funciones puras pueden expresar mejor el patrón que una jerarquía de clases.
 
@@ -193,35 +191,23 @@ Los estados suelen llevar información propia. TypeScript es muy bueno para repr
 
 Conviene aplicarlo cuando:
 
-El comportamiento cambia mucho según el estado.
-
-Hay muchas transiciones válidas e inválidas.
-
-Los condicionales de estado están repetidos en varios lugares.
-
-Quieres hacer explícitas las reglas de transición.
-
-Cada estado tiene lógica propia considerable.
+- El comportamiento cambia mucho según el estado.
+- Hay muchas transiciones válidas e inválidas.
+- Los condicionales de estado están repetidos en varios lugares.
+- Quieres hacer explícitas las reglas de transición.
+- Cada estado tiene lógica propia considerable.
 
 Casos típicos:
 
-Pedidos.
-
-Pagos.
-
-Tickets de soporte.
-
-Workflows de aprobación.
-
-Reproductores multimedia.
-
-Conexiones de red.
-
-Máquinas expendedoras.
-
-Formularios multipaso.
-
-Sesiones de usuario.
+- Pedidos.
+- Pagos.
+- Tickets de soporte.
+- Workflows de aprobación.
+- Reproductores multimedia.
+- Conexiones de red.
+- Máquinas expendedoras.
+- Formularios multipaso.
+- Sesiones de usuario.
 
 Por ejemplo:
 
@@ -235,15 +221,11 @@ es un caso natural.
 
 Puede ser innecesario cuando:
 
-Hay pocos estados y poca lógica.
-
-Un booleano o enum basta.
-
-Las transiciones son simples.
-
-Crear una clase por estado agrega mucho ruido.
-
-La lógica está más clara en una tabla o reducer.
+- Hay pocos estados y poca lógica.
+- Un booleano o enum basta.
+- Las transiciones son simples.
+- Crear una clase por estado agrega mucho ruido.
+- La lógica está más clara en una tabla o reducer.
 
 Por ejemplo:
 
@@ -255,4 +237,5 @@ No necesita State si solo cambia cómo se muestra un botón.
 
 ---
 
-La idea clave: **State permite modelar comportamiento dependiente del estado y transiciones entre estados**. En TypeScript, muchas veces las uniones discriminadas, reducers y tablas de transición son más claras que una clase por estado. El patrón se justifica cuando las reglas de estado son importantes y tienden a crecer; puede ser excesivo para estados simples.
+> [!IMPORTANT]
+> **State permite modelar comportamiento dependiente del estado y transiciones entre estados**. En TypeScript, muchas veces las uniones discriminadas, reducers y tablas de transición son más claras que una clase por estado. El patrón se justifica cuando las reglas de estado son importantes y tienden a crecer; puede ser excesivo para estados simples.

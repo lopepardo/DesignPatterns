@@ -38,7 +38,7 @@ Esto puede funcionar, pero conforme crecen las reglas, el flujo se vuelve rígid
 
 Chain of Responsibility responde a esta pregunta:
 
-**“¿Cómo permito que una solicitud pase por una cadena de manejadores, donde cada uno decide si la procesa, la rechaza o la pasa al siguiente?”**
+> ¿Cómo permito que una solicitud pase por una cadena de manejadores, donde cada uno decide si la procesa, la rechaza o la pasa al siguiente?
 
 ---
 
@@ -63,11 +63,9 @@ El emisor no sabe qué handler responderá. Solo entrega la solicitud al inicio 
 
 Esto conecta con SOLID:
 
-**SRP**: cada handler tiene una responsabilidad específica.
-
-**OCP**: puedes agregar, quitar o reordenar handlers sin reescribir toda la lógica.
-
-**DIP**: el cliente puede depender de una abstracción de handler, no de implementaciones concretas.
+- **SRP**: cada handler tiene una responsabilidad específica.
+- **OCP**: puedes agregar, quitar o reordenar handlers sin reescribir toda la lógica.
+- **DIP**: el cliente puede depender de una abstracción de handler, no de implementaciones concretas.
 
 Pero también hay riesgos: si la cadena es demasiado implícita, puede ser difícil saber qué manejador resolvió o bloqueó la solicitud.
 
@@ -118,33 +116,22 @@ o usar nombres explícitos en la configuración.
 
 Conviene aplicarlo cuando:
 
-Una solicitud puede ser procesada por distintos manejadores.
-
-Quieres desacoplar el emisor del receptor.
-
-Quieres poder reordenar, agregar o quitar pasos.
-
-Cada paso tiene una responsabilidad clara.
-
-El flujo puede detenerse antes de llegar al final.
+- Una solicitud puede ser procesada por distintos manejadores.
+- Quieres desacoplar el emisor del receptor.
+- Quieres poder reordenar, agregar o quitar pasos.
+- Cada paso tiene una responsabilidad clara.
+- El flujo puede detenerse antes de llegar al final.
 
 Casos típicos:
 
-Middlewares HTTP.
-
-Validaciones.
-
-Autorización.
-
-Procesamiento de eventos.
-
-Manejo de soporte o tickets.
-
-Pipelines de importación.
-
-Filtros.
-
-Reglas de negocio encadenadas.
+- Middlewares HTTP.
+- Validaciones.
+- Autorización.
+- Procesamiento de eventos.
+- Manejo de soporte o tickets.
+- Pipelines de importación.
+- Filtros.
+- Reglas de negocio encadenadas.
 
 Por ejemplo:
 
@@ -158,20 +145,16 @@ es un caso natural.
 
 Puede ser innecesario cuando:
 
-Hay un único manejador.
-
-La selección es simple y un `switch` es más legible.
-
-El orden de la cadena es confuso.
-
-Los handlers están demasiado acoplados entre sí.
-
-La cadena oculta demasiado el flujo.
-
-El patrón obliga a partir una lógica que conceptualmente es una sola operación.
+- Hay un único manejador.
+- La selección es simple y un `switch` es más legible.
+- El orden de la cadena es confuso.
+- Los handlers están demasiado acoplados entre sí.
+- La cadena oculta demasiado el flujo.
+- El patrón obliga a partir una lógica que conceptualmente es una sola operación.
 
 Por ejemplo, si tienes tres validaciones simples dentro de una función pequeña, no necesitas necesariamente tres handlers separados.
 
 ---
 
-La idea clave: **Chain of Responsibility permite procesar una solicitud mediante una secuencia de handlers desacoplados, donde cada uno puede manejar, detener o pasar la solicitud al siguiente**. En TypeScript, suele expresarse muy bien con funciones, middlewares, pipelines y composición, no necesariamente con clases enlazadas.
+> [!IMPORTANT]
+> **Chain of Responsibility permite procesar una solicitud mediante una secuencia de handlers desacoplados, donde cada uno puede manejar, detener o pasar la solicitud al siguiente**. En TypeScript, suele expresarse muy bien con funciones, middlewares, pipelines y composición, no necesariamente con clases enlazadas.

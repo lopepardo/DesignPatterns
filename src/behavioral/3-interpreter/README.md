@@ -98,11 +98,10 @@ Y evaluarlo contra un contexto:
 expression.interpret(context);
 ```
 
-Con SOLID:
+Con SOLID puede ayudar con:
 
-Interpreter puede ayudar con **OCP**, porque puedes agregar nuevas expresiones sin modificar todas las existentes.
-
-También puede ayudar con **SRP**, porque cada expresión tiene una responsabilidad pequeña.
+- **OCP**, porque puedes agregar nuevas expresiones sin modificar todas las existentes.
+- **SRP**, porque cada expresión tiene una responsabilidad pequeña.
 
 Pero puede volverse excesivo rápidamente. Para lenguajes complejos, normalmente conviene usar parsers, librerías especializadas o motores de reglas, no construir todo manualmente.
 
@@ -157,31 +156,21 @@ Otro error es dejar que usuarios finales definan reglas demasiado poderosas sin 
 
 Conviene aplicarlo cuando:
 
-Tienes un lenguaje pequeño o una gramática simple.
-
-Quieres representar reglas como datos.
-
-Quieres evaluar expresiones dinámicas.
-
-Quieres permitir configuración sin modificar código.
-
-Quieres construir filtros, condiciones, fórmulas o reglas combinables.
+- Tienes un lenguaje pequeño o una gramática simple.
+- Quieres representar reglas como datos.
+- Quieres evaluar expresiones dinámicas.
+- Quieres permitir configuración sin modificar código.
+- Quieres construir filtros, condiciones, fórmulas o reglas combinables.
 
 Casos típicos:
 
-Reglas de descuento.
-
-Filtros de búsqueda.
-
-Permisos.
-
-Validaciones configurables.
-
-Segmentación de usuarios.
-
-Expresiones matemáticas simples.
-
-Reglas de negocio editables desde una interfaz.
+- Reglas de descuento.
+- Filtros de búsqueda.
+- Permisos.
+- Validaciones configurables.
+- Segmentación de usuarios.
+- Expresiones matemáticas simples.
+- Reglas de negocio editables desde una interfaz.
 
 Por ejemplo:
 
@@ -201,17 +190,12 @@ Esto puede guardarse en base de datos y luego interpretarse.
 
 Puede ser innecesario cuando:
 
-La lógica es fija y simple.
-
-No necesitas representar reglas como datos.
-
-Una función normal es más clara.
-
-El lenguaje crece demasiado.
-
-La implementación manual se vuelve difícil de mantener.
-
-El equipo no necesita ese nivel de flexibilidad.
+- La lógica es fija y simple.
+- No necesitas representar reglas como datos.
+- Una función normal es más clara.
+- El lenguaje crece demasiado.
+- La implementación manual se vuelve difícil de mantener.
+- El equipo no necesita ese nivel de flexibilidad.
 
 Por ejemplo:
 
@@ -225,4 +209,5 @@ No necesita Interpreter si no hay una razón real para convertir esa condición 
 
 ---
 
-La idea clave: **Interpreter sirve para representar y evaluar un lenguaje pequeño de expresiones o reglas**. En TypeScript puede verse como clases con `interpret()`, funciones componibles o, muy naturalmente, como uniones discriminadas que forman un árbol interpretable. Conviene cuando necesitas reglas dinámicas y controladas; puede ser excesivo cuando una función simple expresa mejor la lógica.
+> [!IMPORTANT]
+> **Interpreter sirve para representar y evaluar un lenguaje pequeño de expresiones o reglas**. En TypeScript puede verse como clases con `interpret()`, funciones componibles o, muy naturalmente, como uniones discriminadas que forman un árbol interpretable. Conviene cuando necesitas reglas dinámicas y controladas; puede ser excesivo cuando una función simple expresa mejor la lógica.

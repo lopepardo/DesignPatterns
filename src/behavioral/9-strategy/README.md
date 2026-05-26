@@ -37,7 +37,7 @@ free_shipping_campaign
 
 Strategy responde a esta pregunta:
 
-**“¿Cómo encapsulo varias formas de hacer algo para poder intercambiarlas sin modificar la lógica que las usa?”**
+> ¿Cómo encapsulo varias formas de hacer algo para poder intercambiarlas sin modificar la lógica que las usa?
 
 El problema no es que un `if` sea malo. Un `switch` pequeño y claro puede ser perfectamente correcto. El problema aparece cuando los algoritmos crecen, cambian con frecuencia o deben combinarse dinámicamente.
 
@@ -75,11 +75,9 @@ calculateCheckoutTotal(order, expressShipping);
 
 Con SOLID:
 
-Strategy se relaciona mucho con **OCP**, porque puedes agregar nuevas estrategias sin modificar el código que las ejecuta.
-
-También con **DIP**, porque el cliente depende de una abstracción del algoritmo, no de implementaciones concretas.
-
-Y con **SRP**, porque cada estrategia concentra una forma específica de hacer el cálculo.
+- **OCP**, porque puedes agregar nuevas estrategias sin modificar el código que las ejecuta.
+- **DIP**, porque el cliente depende de una abstracción del algoritmo, no de implementaciones concretas.
+- **SRP**, porque cada estrategia concentra una forma específica de hacer el cálculo.
 
 Pero Strategy puede ser excesivo si solo tienes dos líneas de lógica y pocas variantes estables.
 
@@ -143,39 +141,25 @@ Si el algoritmo seleccionado tiene implicaciones legales, financieras o de domin
 
 Conviene aplicarlo cuando:
 
-Tienes varias formas intercambiables de hacer una tarea.
-
-Los algoritmos cambian o crecen de forma independiente.
-
-Quieres seleccionar comportamiento en runtime.
-
-Quieres evitar condicionales grandes o repetidos.
-
-Quieres componer comportamientos.
-
-Quieres facilitar pruebas usando estrategias falsas.
+- Tienes varias formas intercambiables de hacer una tarea.
+- Los algoritmos cambian o crecen de forma independiente.
+- Quieres seleccionar comportamiento en runtime.
+- Quieres evitar condicionales grandes o repetidos.
+- Quieres componer comportamientos.
+- Quieres facilitar pruebas usando estrategias falsas.
 
 Casos típicos:
 
-Cálculo de envío.
-
-Descuentos.
-
-Validaciones.
-
-Ordenamiento.
-
-Pricing.
-
-Cálculo de impuestos.
-
-Métodos de pago.
-
-Serialización.
-
-Compresión.
-
-Políticas de autorización.
+- Cálculo de envío.
+- Descuentos.
+- Validaciones.
+- Ordenamiento.
+- Pricing.
+  C- álculo de impuestos.
+- Métodos de pago.
+- Serialización.
+- Compresión.
+- Políticas de autorización.
 
 Por ejemplo:
 
@@ -189,15 +173,11 @@ tiene sentido si existen múltiples políticas de precio.
 
 Puede ser innecesario cuando:
 
-Solo hay una variante.
-
-Hay pocas variantes muy simples y estables.
-
-Un `switch` local es más legible.
-
-La abstracción vuelve más difícil seguir la lógica.
-
-Las estrategias no son realmente intercambiables.
+- Solo hay una variante.
+- Hay pocas variantes muy simples y estables.
+- Un `switch` local es más legible.
+- La abstracción vuelve más difícil seguir la lógica.
+- Las estrategias no son realmente intercambiables.
 
 Por ejemplo:
 
@@ -209,4 +189,5 @@ no necesita Strategy si solo hay una forma de calcularlo.
 
 ---
 
-La idea clave: **Strategy encapsula algoritmos o políticas intercambiables para que el código que los usa no tenga que conocer sus detalles concretos**. En TypeScript, una estrategia suele ser una función, un objeto con un método o una factory con dependencias. El patrón se justifica cuando las variantes son reales y relevantes; puede ser excesivo cuando solo reemplaza un `if` simple sin aportar flexibilidad.
+> [!IMPORTANT]
+> **Strategy encapsula algoritmos o políticas intercambiables para que el código que los usa no tenga que conocer sus detalles concretos**. En TypeScript, una estrategia suele ser una función, un objeto con un método o una factory con dependencias. El patrón se justifica cuando las variantes son reales y relevantes; puede ser excesivo cuando solo reemplaza un `if` simple sin aportar flexibilidad.

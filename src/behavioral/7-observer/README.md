@@ -38,7 +38,7 @@ await updateRecommendationModel(order);
 
 Observer responde a esta pregunta:
 
-**“¿Cómo permito que varios objetos o funciones reaccionen a un cambio sin acoplar fuertemente al emisor con todos los receptores?”**
+> ¿Cómo permito que varios objetos o funciones reaccionen a un cambio sin acoplar fuertemente al emisor con todos los receptores?
 
 ---
 
@@ -72,11 +72,10 @@ Los observadores reaccionan:
 observer.update(event);
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Observer puede ayudar con **OCP**, porque puedes agregar nuevas reacciones sin modificar el subject.
-
-También ayuda con **DIP**, porque el subject depende de una abstracción de observador, no de implementaciones concretas.
+- **OCP**, porque puedes agregar nuevas reacciones sin modificar el subject.
+- **DIP**, porque el subject depende de una abstracción de observador, no de implementaciones concretas.
 
 Pero hay un riesgo: si se usa sin cuidado, el flujo del programa se vuelve difícil de seguir porque una acción dispara muchas consecuencias indirectas.
 
@@ -148,35 +147,23 @@ Si `sendEmail` depende de que `save` haya ocurrido, quizá Observer no es la abs
 
 Conviene aplicarlo cuando:
 
-Varios interesados deben reaccionar a un cambio.
-
-El emisor no debería conocer a todos los receptores.
-
-Quieres permitir suscripciones dinámicas.
-
-Las reacciones son opcionales, extensibles o secundarias.
-
-Quieres desacoplar eventos de sus consecuencias.
+- Varios interesados deben reaccionar a un cambio.
+- El emisor no debería conocer a todos los receptores.
+- Quieres permitir suscripciones dinámicas.
+- Las reacciones son opcionales, extensibles o secundarias.
+- Quieres desacoplar eventos de sus consecuencias.
 
 Casos típicos:
 
-Eventos de UI.
-
-Cambios de estado.
-
-Notificaciones.
-
-Sistemas de plugins.
-
-Eventos de dominio.
-
-Actualización de vistas.
-
-Stores reactivos.
-
-WebSockets.
-
-Auditoría y analytics.
+- Eventos de UI.
+- Cambios de estado.
+- Notificaciones.
+- Sistemas de plugins.
+- Eventos de dominio.
+- Actualización de vistas.
+- Stores reactivos.
+- WebSockets.
+- Auditoría y analytics.
 
 Por ejemplo:
 
@@ -192,15 +179,11 @@ Tiene sentido si esas reacciones pueden agregarse o quitarse sin modificar la cr
 
 Puede ser innecesario cuando:
 
-Solo hay un receptor.
-
-La secuencia debe ser estrictamente controlada.
-
-Las acciones son parte esencial de una transacción.
-
-El flujo debe ser muy explícito para ser comprensible.
-
-El patrón oculta efectos secundarios importantes.
+- Solo hay un receptor.
+- La secuencia debe ser estrictamente controlada.
+- Las acciones son parte esencial de una transacción.
+- El flujo debe ser muy explícito para ser comprensible.
+- El patrón oculta efectos secundarios importantes.
 
 Por ejemplo:
 
@@ -213,29 +196,5 @@ Probablemente no conviene esconder eso detrás de un evento si la consistencia d
 
 ---
 
-## 6. Analogía sencilla
-
-Imagina un canal de noticias.
-
-El canal publica una noticia:
-
-```txt
-“Hay una nueva promoción”
-```
-
-Varias personas suscritas la reciben:
-
-```txt
-- una persona la lee en el celular
-- otra recibe un email
-- otra la ve en una app
-- otra la ignora
-```
-
-El canal no necesita llamar personalmente a cada persona ni saber qué hará cada una con la noticia.
-
-Observer funciona igual: un objeto anuncia que algo cambió, y varios observadores reaccionan.
-
----
-
-La idea clave: **Observer permite que varios interesados reaccionen a eventos o cambios sin acoplar fuertemente al emisor con cada receptor**. En TypeScript suele expresarse muy bien con funciones `subscribe`, callbacks, event buses simples, stores o listeners. Es útil para eventos y reacciones secundarias; puede ser peligroso si oculta lógica esencial o efectos secundarios difíciles de rastrear.
+> [!IMPORTANT]
+> **Observer permite que varios interesados reaccionen a eventos o cambios sin acoplar fuertemente al emisor con cada receptor**. En TypeScript suele expresarse muy bien con funciones `subscribe`, callbacks, event buses simples, stores o listeners. Es útil para eventos y reacciones secundarias; puede ser peligroso si oculta lógica esencial o efectos secundarios difíciles de rastrear.

@@ -38,7 +38,7 @@ El problema es que las clases de la estructura empiezan a llenarse de operacione
 
 Visitor responde a esta pregunta:
 
-**“¿Cómo agrego nuevas operaciones sobre una estructura de objetos sin cambiar las clases de esa estructura?”**
+> ¿Cómo agrego nuevas operaciones sobre una estructura de objetos sin cambiar las clases de esa estructura?
 
 Hay que decirlo con cuidado: Visitor no elimina la complejidad. La mueve. Facilita agregar operaciones, pero hace más costoso agregar nuevos tipos de elementos.
 
@@ -86,13 +86,11 @@ Element.accept(visitor)
 Visitor.visitConcreteElement(element)
 ```
 
-Con SOLID:
+Con SOLID ayuda con:
 
-Visitor puede apoyar **OCP** para agregar nuevas operaciones sin modificar la estructura existente.
-
-Pero tensiona **OCP** en el otro eje: agregar un nuevo tipo de elemento obliga a modificar todos los visitors.
-
-También se relaciona con **SRP**, porque las operaciones externas quedan fuera de los elementos.
+- **OCP** para agregar nuevas operaciones sin modificar la estructura existente.
+- **OCP** en el otro eje: agregar un nuevo tipo de elemento obliga a modificar todos los visitors.
+- **SRP**, porque las operaciones externas quedan fuera de los elementos.
 
 Y puede chocar con encapsulamiento si el visitor necesita acceder a demasiados detalles internos del elemento.
 
@@ -145,33 +143,22 @@ También puede ser excesivo en TypeScript si una unión discriminada con `switch
 
 Conviene aplicarlo cuando:
 
-Tienes una estructura de elementos relativamente estable.
-
-Quieres agregar muchas operaciones sobre esa estructura.
-
-Quieres separar operaciones de los elementos.
-
-Trabajas con árboles, ASTs o estructuras compuestas.
-
-Quieres evitar llenar las clases de métodos no relacionados.
+- Tienes una estructura de elementos relativamente estable.
+- Quieres agregar muchas operaciones sobre esa estructura.
+- Quieres separar operaciones de los elementos.
+- Trabajas con árboles, ASTs o estructuras compuestas.
+- Quieres evitar llenar las clases de métodos no relacionados.
 
 Casos típicos:
 
-Compiladores.
-
-Intérpretes.
-
-Linters.
-
-Formateadores.
-
-ASTs.
-
-Árboles de documentos.
-
-Exportadores.
-
-Validadores sobre estructuras complejas.
+- Compiladores.
+- Intérpretes.
+- Linters.
+- Formateadores.
+- ASTs.
+- Árboles de documentos.
+- Exportadores.
+- Validadores sobre estructuras complejas.
 
 Por ejemplo:
 
@@ -190,15 +177,11 @@ es un caso clásico.
 
 Puede ser innecesario cuando:
 
-La estructura cambia más que las operaciones.
-
-Solo tienes una o dos operaciones.
-
-La solución con funciones y `switch` es más clara.
-
-Los elementos no forman una estructura de variantes.
-
-El visitor necesita romper encapsulamiento.
+- La estructura cambia más que las operaciones.
+- Solo tienes una o dos operaciones.
+- La solución con funciones y `switch` es más clara.
+- Los elementos no forman una estructura de variantes.
+- El visitor necesita romper encapsulamiento.
 
 Por ejemplo, para una lista simple de usuarios:
 
@@ -210,4 +193,5 @@ no necesitas Visitor.
 
 ---
 
-La idea clave: **Visitor separa operaciones de una estructura de elementos, facilitando agregar nuevas operaciones cuando la estructura es estable**. En TypeScript, muchas veces una unión discriminada con funciones o una tabla de visitors es más clara que la versión clásica con `accept()`. El patrón se justifica especialmente en árboles, ASTs y estructuras donde hay muchas operaciones sobre tipos de nodos relativamente estables.
+> [!IMPORTANT]
+> **Visitor separa operaciones de una estructura de elementos, facilitando agregar nuevas operaciones cuando la estructura es estable**. En TypeScript, muchas veces una unión discriminada con funciones o una tabla de visitors es más clara que la versión clásica con `accept()`. El patrón se justifica especialmente en árboles, ASTs y estructuras donde hay muchas operaciones sobre tipos de nodos relativamente estables.
